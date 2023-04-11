@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import axios from 'axios'
+import FileUploaded from './FileUploaded'
 //import { use } from '../../backend/routes/auth';
 
 function ListProperty() {
@@ -13,7 +14,7 @@ function ListProperty() {
     state:"",
     zip:"",
   })
-  const[filedata,setFileData]=useState(null  )
+  const[filedata,setFileData]=useState(null)
   const handleOnChange=(e)=>{
     setFormData({
       ...formData,
@@ -22,22 +23,43 @@ function ListProperty() {
     console.log("form data is being updated ");
     //setAadhar_no(event.target.value)
   }
-  const handleOnSubmit=()=>{
-    const newFormData = new FormData();
-    newFormData.append("address", formData.address);
-    newFormData.append("price", formData.price);
-    newFormData.append("description", formData.description);
-    newFormData.append("city", formData.city);
-    newFormData.append("latitude", formData.latitude);
-    newFormData.append("state", formData.state);
-    newFormData.append("zip", formData.zip);
+  const handleOnSubmit=(e)=>{
+    e.preventDefault()
+    const data = new FormData();
+    data.append("address", formData.address);
+    data.append("price", formData.price);
+    data.append("description", formData.description);
+    data.append("city", formData.city);
+    data.append("coordinates[latitude]", formData.latitude);
+    data.append("coordinates[longitude]", formData.longitude);
+    data.append("state", formData.state);
+    data.append("zip", formData.zip);
+    data.append("testImage", filedata);
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:5000/listproperty',
+      headers: { 
+        'Accept': '*/*', 
+        'Content-Type': 'multipart/form-data'
+      },
+      data : data
+    };
+     
+    axios.request(config)
+    .then((response) => {
+    console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.error(error.response.data);
+    });
+    console.log(data)
 
-
-  }
+  };
   return (
-    <>
-      <h3>list your property</h3>
-      <form>
+    <div className="row my-10" style={{margin:"12px"}}>
+      <h3>List your property</h3>
+      <form action="/listproperty"method="POST" encType="multipart/form-data"> 
         <div className="form-row ">
           <div className="col-md-4 mb-3">
             <label htmlFor="validationDefault02">Address</label>
@@ -94,32 +116,7 @@ function ListProperty() {
               required=""
             />
           </div>
-          <div className="col-md-6 mb-3 ">
-            <label htmlFor="validationDefault03">latitude</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.latitude}
-              onChange={handleOnChange}
-              id="validationDefault03"
-              name="latitude"
-              placeholder="latitude"
-              required=""
-            />
-          </div>
-          <div className="col-md-6 mb-3 ">
-            <label htmlFor="validationDefault03">longitude</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.longitude}
-              onChange={handleOnChange}
-              id="validationDefault03"
-              name="longitude"
-              placeholder="longitude"
-              required=""
-            />
-          </div>
+         
 
           <div className="col-md-3 mb-3">
             <label htmlFor="validationDefault04">State</label>
@@ -148,26 +145,15 @@ function ListProperty() {
             />
           </div>
         </div>
-        <div className="form-group">
-        <div className="form-group">
-          <label htmlFor="exampleFormControlFile1"></label>
-              <input
-                    type="file"
-                    className="form-control-file"
-                    value={filedata}
-                    id="exampleFormControlFile1"
-                    name="propertyImage"
-                    onChange={(e) => setFileData(e.target.files[0])}
-                    />
-        </div>
-        </div>
+        <FileUploaded  onFileSelect={(file) => setFileData(file)}></FileUploaded>
       
 
         <button className="btn btn-primary" type="submit" onClick={handleOnSubmit}>
           Submit form 
         </button>
       </form>
-    </>
+      
+    </div>
   );
 }
 

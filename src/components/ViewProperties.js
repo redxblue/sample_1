@@ -10,8 +10,10 @@ function ViewProperties() {
       .catch((err) => console.log(err, "it has an error"));
   });
   return (
-    <div >
-      <h1>Image uploading react</h1>
+    <div className="" >
+      <h2>Homes near you</h2>
+      <div className="row ">
+        {console.log(data)}
        {data.map((obj) => {
           const base64String = btoa(
             new Uint8Array(obj.img.data.data).reduce(function (data, byte) {
@@ -20,13 +22,26 @@ function ViewProperties() {
           );
           //console.log(base64String)
           return (
-            <img
-              src={`data:image/png;base64,${base64String}`}
-              alt=""
-              width="300"
-            />
-          );
-        })}
+            
+             <div className="col">
+              <div className="card" style={{ width: "18rem" }}>
+                  <img className="card-img-top" src={`data:image/png;base64,${base64String}`} alt="Card image cap" />
+                  <div className="card-body">
+                  <h5 className="card-title">{obj.address}</h5>           {/*`Price:${obj.price}` */}
+                  <p className="card-text" style={{fontSize:"13px",fontWeight:"600"}}>
+                    {obj.description}
+                  </p>
+                  <a href="#" className="btn btn-primary">
+                  View more details
+                  </a>
+                  </div>
+                  </div>
+              </div>
+
+            
+            );
+    })} {/*<--- map bracket */}
+    </div>
     </div>
   );
 }

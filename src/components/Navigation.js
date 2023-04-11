@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
-import logo from '../assets/logo.svg';
+//import logo from '../assets/logo.png';
+import newlogo from '../assets/newlogo.png'
 import {
     Link
   } from "react-router-dom";
@@ -23,8 +24,9 @@ const Navigation = ({ account, setAccount,formData,setFormData}) => {
             </ul>
 
             <div className='nav__brand'>
-                <img src={logo} alt="Logo" />
-                <Link to="/"> <h1>Weaver</h1></Link> {/*onClick={() => {window.location.href="/"}}*/}
+                
+                <Link to="/"><img src={newlogo} alt="Logo" /></Link> 
+                {/* onClick={() => {window.location.href="/"}} */}
             </div>
 
             {account ? (
