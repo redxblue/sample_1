@@ -5,13 +5,13 @@ const propertyList = new mongoose.Schema({
     },
     img:{
         data:Buffer,
-        contentType:String                                 //8.2 keys
+        contentType:String                                 //9.2 keys
     },
     description:{
         type:String
     },
     price:{
-        type:String
+        type:String       //may want to include security deposit amount here
     },
     area:{
         type:String
@@ -28,6 +28,10 @@ const propertyList = new mongoose.Schema({
     },
     state:{
         type:String
+    },
+    verified:{
+        type:Boolean,
+        default:false
     }
 
 })
