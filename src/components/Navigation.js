@@ -17,6 +17,7 @@ const Navigation = ({ account, setAccount,formData,setFormData}) => {
                 <li><Link to="#">Buy</Link></li>
                 <li><Link to="/register" >Register</Link></li> {/*onClick={() => {window.location.href="/register"}} */}
                 <li><Link to="/listproperty">List property</Link></li>
+                <li><Link to="/viewproperties">view properties</Link></li>
                 
 
             </ul>

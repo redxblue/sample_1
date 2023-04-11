@@ -15,6 +15,7 @@ import Search from './components/Search';
 import Home from './components/Home';
 import Register from './components/Register';
 import ListProperty from './components/ListProperty';
+import ViewProperties from './components/ViewProperties';
 
 // ABIs
 //import RealEstate from './abis/RealEstate.json'
@@ -124,6 +125,9 @@ const[propertyOwner,setPropoertyOwner]=useState(false);
         </Route>
         <Route exact path= "/listproperty">
         <ListProperty />
+        </Route>
+        <Route exact path= "/viewproperties">
+        <ViewProperties />
         </Route>
       </Switch>     
      </Router>
