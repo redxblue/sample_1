@@ -4,7 +4,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 //import VerifyState from './context/verificationData/verifyState';
 
@@ -16,13 +15,15 @@ import Home from './components/Home';
 import Register from './components/Register';
 import ListProperty from './components/ListProperty';
 import ViewProperties from './components/ViewProperties';
+import LandInspector from './components/LandInspector';
+import UserDashboard from './components/UserDashboard';
 
 // ABIs
 //import RealEstate from './abis/RealEstate.json'
 //import Escrow from './abis/Escrow.json'
 
 // Config
-import config from './config.json';
+//import config from './config.json';
 
 function App() {
 
@@ -128,6 +129,12 @@ const[propertyOwner,setPropoertyOwner]=useState(false);
         </Route>
         <Route exact path= "/viewproperties">
         <ViewProperties />
+        </Route>
+        <Route exact path= "/landinspector">
+        <LandInspector />
+        </Route>
+        <Route exact path= "/userdashboard">
+        <UserDashboard />
         </Route>
       </Switch>     
      </Router>

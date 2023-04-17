@@ -15,17 +15,13 @@ function ViewProperties() {
       <div className="row ">
         {console.log(data)}
        {data.map((obj) => {
-          const base64String = btoa(
-            new Uint8Array(obj.img.data.data).reduce(function (data, byte) {
-              return data + String.fromCharCode(byte);
-            }, "")
-          );
+        
           //console.log(base64String)
           return (
             
              <div className="col">
               <div className="card" style={{ width: "18rem" }}>
-                  <img className="card-img-top" src={`data:image/png;base64,${base64String}`} alt="Card image cap" />
+                  <img className="card-img-top" src={obj.img} alt="Card image cap" />
                   <div className="card-body">
                   <h5 className="card-title">{obj.address}</h5>           {/*`Price:${obj.price}` */}
                   <p className="card-text" style={{fontSize:"13px",fontWeight:"600"}}>

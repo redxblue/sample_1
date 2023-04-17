@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const propertyList = new mongoose.Schema({
+    owner:{
+        type: String,
+        default:"0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+    },
     address:{
         type:String
     },
     img:{
-        data:Buffer,
-        contentType:String                                 //9.2 keys
+        type:String                                //9.2 keys
     },
     description:{
         type:String

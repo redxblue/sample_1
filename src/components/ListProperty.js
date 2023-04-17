@@ -1,9 +1,31 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import axios from 'axios'
 import FileUploaded from './FileUploaded'
 //import { use } from '../../backend/routes/auth';
 
 function ListProperty() {
+
+  let base64Code="";
+  const getBase64=(file, cb)=>{
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        cb(reader.result)
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+}
+const[filedata,setFileData]=useState(null)
+// useEffect(()=>{
+//   getBase64(filedata, (result) => {
+//     base64Code = result;
+//   });
+//   console.log(base64Code)
+// },[filedata])
+
+
+
   const [formData, setFormData] =useState({
     address: "",
     price:"",
@@ -14,7 +36,13 @@ function ListProperty() {
     state:"",
     zip:"",
   })
-  const[filedata,setFileData]=useState(null)
+  if(formData.zip.length>6){
+    setFormData({
+      ...formData,
+      ["zip"]: formData.zip.slice(0,6)
+    }); 
+  }
+
   const handleOnChange=(e)=>{
     setFormData({
       ...formData,
@@ -25,35 +53,80 @@ function ListProperty() {
   }
   const handleOnSubmit=(e)=>{
     e.preventDefault()
-    const data = new FormData();
-    data.append("address", formData.address);
-    data.append("price", formData.price);
-    data.append("description", formData.description);
-    data.append("city", formData.city);
-    data.append("coordinates[latitude]", formData.latitude);
-    data.append("coordinates[longitude]", formData.longitude);
-    data.append("state", formData.state);
-    data.append("zip", formData.zip);
-    data.append("testImage", filedata);
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://localhost:5000/listproperty',
-      headers: { 
-        'Accept': '*/*', 
-        'Content-Type': 'multipart/form-data'
-      },
-      data : data
-    };
-     
-    axios.request(config)
-    .then((response) => {
-    console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.error(error.response.data);
+    getBase64(filedata, async(result) => {
+      base64Code = result;
+      console.log(base64Code)
+      const response = await fetch("http://localhost:5000/listproperty", {
+        method: 'POST', /////////////////////////////Fetching from DB///////////////
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({address:formData.address,
+          price:formData.price,
+          description:formData.description,
+          img:base64Code,
+          city:formData.city,
+          coordinates:{latitude:formData.latitude,
+            longitude:formData.longitude},
+            state:formData.state,
+            zip:formData.zip,
+                  
+        })
     });
-    console.log(data)
+    });
+
+
+
+    // const data = new FormData();
+    // data.append("address", formData.address);
+    // data.append("price", formData.price);
+    // data.append("description", formData.description);
+    // data.append("city", formData.city);
+    // data.append("coordinates[latitude]", formData.latitude);
+    // data.append("coordinates[longitude]", formData.longitude);
+    // data.append("state", formData.state);
+    // data.append("zip", formData.zip);
+    // data.append("testImage", filedata); 
+    // console.log(filedata)
+    
+
+
+  //   fetch("http://localhost:5000/listproperty", {
+  //     body: data,
+  //     headers: {
+           
+  //     },
+  //     method: "post",
+  // }).then((response) => {
+  //   console.log(JSON.stringify(response.data));
+  //   })
+  //   .catch((error) => {
+  //     console.error(error.response.data);
+  //   });
+  //   console.log(data)
+
+
+
+    // let config = {
+    //   method: 'post',
+    //   maxBodyLength: Infinity,
+    //   url: 'http://localhost:5000/listproperty',
+    //   headers: { 
+    //     'Accept': '*/*', 
+    //     'Content-Type': 'multipart/form-data'
+    //   },
+    //   data : data
+    // };
+     
+    // axios.request(config)
+    // .then((response) => {
+    // console.log(JSON.stringify(response.data));
+    // })
+    // .catch((error) => {
+    //   console.error(error.response.data);
+    // });
+    // console.log(data)
+
 
   };
   return (
@@ -146,10 +219,11 @@ function ListProperty() {
           </div>
         </div>
         <FileUploaded  onFileSelect={(file) => setFileData(file)}></FileUploaded>
+        
       
 
         <button className="btn btn-primary" type="submit" onClick={handleOnSubmit}>
-          Submit form 
+          Submit for verification 
         </button>
       </form>
       

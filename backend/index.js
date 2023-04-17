@@ -1,60 +1,34 @@
 const connectToMongo = require('./db'); //refactoring is required for  image upload and retrive blocks
 const express = require('express')
 const cors = require("cors");
-const multer=require("multer") /////////////image upload///////////
 const Properties = require('./models/propertyList')/////////////image upload///////////
-const fs =require('fs')  /////////////image upload///////////
 connectToMongo();
 const app = express()
+const maxRequestBodySize = '4mb';
+app.use(express.json({limit: maxRequestBodySize}));
+// app.use(express.urlencoded({limit: maxRequestBodySize}));
 const port = 5000
 
-app.use(express.json());                                                      //viewproperties
-
+app.use(express.json());  
+                                                  
 app.use(cors());
 app.use('/', require('./routes/auth'));
 
 // app.use('/api/notes', require('./routes/notes'))
 ////////////////////image retrieve//////////////////////
-app.get('/viewproperties', async(req, res) => { 
+app.get('/viewproperties', async(req, res) => {     //viewproperties
   const allData=await Properties.find()
+  console.log(allData)
    res.json(allData)
  })
- ////////////////////image retrieve//////////////////////
-////////////////////////////////////////image upload//////////////////////////////
-const storage =multer.diskStorage({
-  destination:(req, res,cb)=>{
-    cb(null,'uploads')
-  },
-  filename:(req,file,cb)=>{
-    cb(null,file.originalname)
-  }
+app.get('/landinspector',async(req,res)=>{
+  const pendingRequests=await Properties.find({verified:false})
+  res.json(pendingRequests)
 })
-
-const upload = multer({storage:storage})
-app.post('/listproperty',upload.single('testImage'),(req, res)=>{
-  const saveProperty=new Properties({
-    address:req.body.address, 
-    img:{
-     data:fs.readFileSync(`${__dirname}/uploads/${req.file.filename}`),    //"uploads/" + req.file.filename   <-comment out this block ie img to prevent error
-     contentType:"image/png"
-    },
-    description:req.body.description,
-    price:req.body.price,
-    area:req.body.area,
-    coordinates:{
-      latitude:req.body.coordinates.latitude,
-      longitude:req.body.coordinates.longitude
-    },
-    pincode:req.body.pincode,
-    state:req.body.state
-
-  });
-  saveProperty.save()
-  .then((res)=>{console.log("property is saved")})
-  .catch((err)=>{console.log(err,"error has occured")});
-  res.send("property is saved")
-});
-////////////////////////////////////////image upload//////////////////////////////
+// app.get('/userdashboard',async(req,res)=>{
+//   const verifiedRequests=await Properties.find({owner:req.body.owner,verified:true}) /////Forgot to put Owner in the properties model
+//   res.json(verifiedRequests)
+// })
 
 
 app.listen(port, () => {

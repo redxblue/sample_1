@@ -8,20 +8,6 @@ import { Link } from 'react-router-dom';
 
 function Register() {
   const userName="John Doe"
-  // const context = useContext(verifyContext);
-  // const {userList,setUserList} = context;
-  //console.log(userList)
-  ////////////////////Aadhar verification/////////////  // -mongo not working
-
-  // const verification= async()=>{
-  //   connectDB();
-  //   const mongoUser= await Users.findOne({aadhar_no:aadhar_no});  
-  //   console.log(mongoUser);
-  //   if(mongoUser){
-  //       console.log("User is valid");
-  //       setRegistered(true);
-  //     }
-  // }
   const [formData, setFormData] =useState({
     aadhar_no: "",
     propertyOwner:false,
@@ -99,10 +85,6 @@ function Register() {
     //  JSON.stringify(json.data)
     }
 
-    /*const handleOwner=(e)=>{
-    setPropertyOwner(e.target.value)
-    }
-    handleOwner() */
   }
 
   return (
@@ -192,15 +174,3 @@ function Register() {
   }
 
 export default Register
-{/*
-
-{isValid?( <div class="text-center">
-  <button type="submit" className="btn btn-primary my-3"onClick={checkWithDB}>
-    Submit
-  </button>
-    </div>):(<div class="text-center">
-  <button type="submit" className="btn btn-primary my-3"onClick={validation}>
-    Submit
-  </button>
-    </div>)}
-*/}

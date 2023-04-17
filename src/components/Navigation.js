@@ -15,10 +15,11 @@ const Navigation = ({ account, setAccount,formData,setFormData}) => {
     return (
         <nav>
             <ul className='nav__links'>
-                <li><Link to="#">Buy</Link></li>
                 <li><Link to="/register" >Register</Link></li> {/*onClick={() => {window.location.href="/register"}} */}
                 <li><Link to="/listproperty">List property</Link></li>
                 <li><Link to="/viewproperties">view properties</Link></li>
+                <li><Link to="/landinspector">Land Inspector</Link></li>
+                <li><Link to="/userdashboard">User Dashboard</Link></li>
                 
 
             </ul>
@@ -45,6 +46,8 @@ const Navigation = ({ account, setAccount,formData,setFormData}) => {
                     Connect
                 </button>
             )}
+            {console.log(account)}
+            
         </nav>
     );
 }
